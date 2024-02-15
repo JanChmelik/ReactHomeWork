@@ -15,7 +15,6 @@ function Select({ dataIn, label, handleData, selectedValue, id }) {
         id={id}
         onChange={handleChange}
         value={selectedValue}
-
       >
         {dataIn.map((item, index) => (
           <option key={index} value={item}>

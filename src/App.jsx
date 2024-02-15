@@ -5,6 +5,7 @@ import validateFloat from "./functions/validateFloat";
 import RbGroup from "./components/RbGroup";
 import ChbGroup from "./components/ChbGroup";
 import NumIn from "./components/NumImp";
+import Select from "./components/Select";
 //
 function App() {
   //#region CONSTs
@@ -24,6 +25,16 @@ function App() {
   const [scoopsNo, setScoopsNo] = useState();
   const scoopsMin = 1;
   const scoopsMax = 4;
+  // Cream option
+  const [creamOptions, setCreamOptions] = useState([
+    "Select",
+    "low-fat",
+    "medium-fat",
+    "full-fat",
+    "lactose-free",
+    "vegan",
+  ]);
+  const [creamOption, setCreamOption] = useState();
   //#endregion consts for ice-cream
   //#endregion CONSTs
   // ########################### uncomment region prompt on finishing###################################
@@ -57,6 +68,10 @@ function App() {
         }
         break;
       }
+      case `select-kindOfCream`: {
+        setCreamOption(data);
+        break;
+      }
 
       default:
         break;
@@ -81,8 +96,14 @@ function App() {
                   : scoopsNo > 1
                   ? scoopsNo + " scoops "
                   : scoopsNo + " scoop "}{" "}
-                {taste == undefined ? "" : "of " + taste + " flavour, "}
-                {sprinkle.length != 0 ? "with " + sprinkle + "on top" : ""}
+                {taste == undefined ? "" : "of " + taste + " flavour"}
+                {sprinkle.length != 0
+                  ? ", sprinkled with " + sprinkle + "on top."
+                  : "."}
+                <br />
+                {creamOption === "Select"
+                  ? ""
+                  : "Selected cream - " + creamOption}
               </p>
               {/* //#region RBGgroup taste choice*/}
               <RbGroup
@@ -122,6 +143,15 @@ function App() {
                 handleData={handleData}
               />
               {/* //#endregion NUMBER of SCOOPS */}
+              {/* //#region kind of ice-cream */}
+              <Select
+                id="select-kindOfCream"
+                label="Choose your cream-dietary option"
+                dataIn={creamOptions}
+                handleData={handleData}
+                selectedValue={creamOption}
+              />
+              {/* //#endregion kind of ice-cream */}
             </section>
           </div>
           {/* //#endregion 1stcol */}
