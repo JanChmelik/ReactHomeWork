@@ -9,6 +9,8 @@ import Select from "./components/Select";
 import Range from "./components/Range";
 import Clock from "./components/Clock";
 import ProgressBar from "./components/ProgressBar";
+import TextInp from "./components/TextBox";
+import Button from "./components/Button";
 //
 function App() {
   //#region CONSTs
@@ -44,32 +46,37 @@ function App() {
   //#region consts for computer
   const minDiskSpace = 0;
   const maxDisckSpace = 100;
-  const [rangeValue, setRangeValue] = useState();
+  const [rangeValue, setRangeValue] = useState(50);
   // PRGBarr
   let [prgCount, setPrgCount] = useState(0);
   const tickValue = 1000;
   const [tickAdditionToPrgCount, setTickAdd] = useState(25);
-  let [secondsElapsed, setSecondsElapsed] = useState(0);
   //#endregion consts for computer
+  const [txbValue1, setTxbValue1] = useState();
+  const [txbValue2, setTxbValue2] = useState();
+  //#region CONSTS for ADDITION
+  let summ = 0;
+  let [sumText, setSumText] = useState("");
+  //#endregion CONSTS for ADDITION
   //
   //#endregion CONSTs
   // ########################### uncomment region prompt on finishing###################################
-  // //#region promt getting float for addition
-  // useEffect(() => {
-  //   let float = parseFloat(prompt(`Give a float number for addition`, `3.5`));
-  //   while (!validateFloat(float)) {
-  //     float = parseFloat(prompt(`Give a float number for addition`, `3.5`));
-  //   }
-  // }, []);
-  // //#endregion prompt getting float for addition
-  // //
+  //#region promt getting float for addition
+  useEffect(() => {
+    let float = parseFloat(prompt(`Give a float number for addition`, `3.5`));
+    while (!validateFloat(float)) {
+      float = parseFloat(prompt(`Give a float number for addition`, `3.5`));
+    }
+    setTxbValue1(parseFloat(float));
+  }, []);
+  //#endregion prompt getting float for addition
   //
+
   //#region timer prgBar instal progress
   useEffect(() => {
     const timer = setInterval(() => {
       if (prgCount < 100) {
         setPrgCount(prgCount + tickAdditionToPrgCount);
-        setSecondsElapsed(secondsElapsed++);
       }
     }, tickValue);
     console.log(prgCount + "a");
@@ -107,13 +114,43 @@ function App() {
         setRangeValue(data);
         break;
       }
-
+      case "txb-1": {
+        setTxbValue1(data);
+        break;
+      }
+      case "txb-2": {
+        setTxbValue2(data);
+        break;
+      }
       default:
         break;
     }
   };
   //#endregion handleData function
   //
+  //#region handleEVENT
+  const handleEvent = (source) => {
+    switch (source) {
+      case "btn-sum": {
+        console.log("btn-sum clisked");
+        console.log(
+          `valid 1 ${validateFloat(txbValue1)} a 2 ${validateFloat(txbValue2)}`
+        );
+        if (validateFloat(txbValue1) && validateFloat(txbValue2)) {
+          console.log("valid");
+          summ = parseFloat(txbValue1) + parseFloat(txbValue2);
+          setSumText(`Correct inputs, sum is ${summ}`);
+        } else {
+          setSumText("No correct input detected");
+        }
+        break;
+      }
+
+      default:
+        break;
+    }
+  };
+  //#endregion handleEVENT
   //
   return (
     <div className="bg-info-subtle vw-100 vh-100">
@@ -216,16 +253,39 @@ function App() {
               {(100 - prgCount) / tickAdditionToPrgCount}
             </p>
             {/* //#endregion PROGRESSBAR */}
-            {/* //#region 1st in row */}
+            {/* //#region 1st in row textinp*/}
             <div className="row">
-              <div className="col-6"></div>
-              <div className="col-6"></div>
+              <div className="col-sm-6">
+                <TextInp
+                  id="txb-1"
+                  label="First addend"
+                  handleData={handleData}
+                  dataIn={txbValue1}
+                />
+              </div>
+              <div className="col-sm-6">
+                <TextInp
+                  id="txb-2"
+                  label="Second addend"
+                  handleData={handleData}
+                  dataIn={txbValue2}
+                />
+              </div>
             </div>
-            {/* //#endregion 1st in row */}
-            {/* //#region 2nd in row */}
+            {/* //#endregion 1st in row textinp*/}
+            {/* //#region 2nd in row  btn and text*/}
             <div className="row">
-              <div className="col-6"></div>
-              <div className="col-6"></div>
+              <div className="col-6">
+                {" "}
+                <Button
+                  className="margintop paddingtop"
+                  id="btn-sum"
+                  label={"Add together"}
+                  handleEvent={handleEvent}></Button>
+              </div>
+              <div className="col-6">
+                <p>{sumText}</p>
+              </div>
             </div>
             {/* //#endregion 2nd in row */}
             {/* //#region 3rd in row */}
@@ -234,6 +294,7 @@ function App() {
               <div className="col-6"></div>
             </div>
             {/* //#endregion 3rd in row */}
+            {/* <textarea name="" id="" cols="30" rows="10"></textarea> */}
           </div>
           {/* //#endregion 2ndcol */}
         </div>
