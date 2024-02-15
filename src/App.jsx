@@ -49,6 +49,7 @@ function App() {
   let [prgCount, setPrgCount] = useState(0);
   const tickValue = 1000;
   const [tickAdditionToPrgCount, setTickAdd] = useState(25);
+  let [secondsElapsed, setSecondsElapsed] = useState(0);
   //#endregion consts for computer
   //
   //#endregion CONSTs
@@ -68,6 +69,7 @@ function App() {
     const timer = setInterval(() => {
       if (prgCount < 100) {
         setPrgCount(prgCount + tickAdditionToPrgCount);
+        setSecondsElapsed(secondsElapsed++);
       }
     }, tickValue);
     console.log(prgCount + "a");
@@ -211,7 +213,7 @@ function App() {
             <p>
               {" "}
               Instalation of ice-cream in progres, wait:{" "}
-              {prgCount !== 0 || prgCount==100?   : ""}
+              {(100 - prgCount) / tickAdditionToPrgCount}
             </p>
             {/* //#endregion PROGRESSBAR */}
             {/* //#region 1st in row */}
