@@ -46,7 +46,9 @@ function App() {
   const maxDisckSpace = 100;
   const [rangeValue, setRangeValue] = useState();
   // PRGBarr
-  const [prgCount, setPrgCount] = useState(0);
+  let [prgCount, setPrgCount] = useState(0);
+  const tickValue = 1000;
+  const [tickAdditionToPrgCount, setTickAdd] = useState(25);
   //#endregion consts for computer
   //
   //#endregion CONSTs
@@ -60,18 +62,20 @@ function App() {
   // }, []);
   // //#endregion prompt getting float for addition
   // //
+  //
   //#region timer prgBar instal progress
   useEffect(() => {
     const timer = setInterval(() => {
-      if (prgCount <= 100) {
-        setPrgCount(prgCount++);
+      if (prgCount < 100) {
+        setPrgCount(prgCount + tickAdditionToPrgCount);
       }
-    }, 1000);
-    console.log(prgCount);
+    }, tickValue);
+    console.log(prgCount + "a");
     // timer cleanup fction for resetin interval
     return () => clearInterval(timer);
   }, [prgCount]);
   //#endregion timer prgBar instal progress
+  //
   //#region handleData function
   const handleData = (data, source) => {
     switch (source) {
@@ -112,9 +116,9 @@ function App() {
   return (
     <div className="bg-info-subtle vw-100 vh-100">
       {/* //#region container */}
-      <div className="container bg-warning-subtle">
+      <div className="container bg-warning-subtle paddingtop">
         {/* #region wrapping row */}
-        <div className="row">
+        <div className="row margintop">
           {/* //#region 1stcol: ice-cream */}
           <div className="col-6">
             <section className="ice-cream">
@@ -130,7 +134,7 @@ function App() {
                   ? ", sprinkled with " + sprinkle + "on top."
                   : "."}
                 <br />
-                {creamOption === "Select"
+                {creamOption === "Select" || creamOption == undefined
                   ? ""
                   : "Selected cream - " + creamOption}
               </p>
@@ -204,6 +208,11 @@ function App() {
           <div className="col-6">
             {/* //#region PROGRESSBAR */}
             <ProgressBar id="Prg-Instal" dataIn={prgCount} />
+            <p>
+              {" "}
+              Instalation of ice-cream in progres, wait:{" "}
+              {prgCount !== 0 || prgCount==100?   : ""}
+            </p>
             {/* //#endregion PROGRESSBAR */}
             {/* //#region 1st in row */}
             <div className="row">
