@@ -6,9 +6,13 @@ import RbGroup from "./components/RbGroup";
 import ChbGroup from "./components/ChbGroup";
 import NumIn from "./components/NumImp";
 import Select from "./components/Select";
+import Range from "./components/Range";
+import Clock from "./components/Clock";
+import ProgressBar from "./components/ProgressBar";
 //
 function App() {
   //#region CONSTs
+  //
   //#region consts for ice-cream
   // RBGROUP
   const [tastePalete, setTastePalete] = useState([
@@ -36,6 +40,15 @@ function App() {
   ]);
   const [creamOption, setCreamOption] = useState();
   //#endregion consts for ice-cream
+  //
+  //#region consts for computer
+  const minDiskSpace = 0;
+  const maxDisckSpace = 100;
+  const [rangeValue, setRangeValue] = useState();
+  // PRGBarr
+  const [prgCount, setPrgCount] = useState(0);
+  //#endregion consts for computer
+  //
   //#endregion CONSTs
   // ########################### uncomment region prompt on finishing###################################
   // //#region promt getting float for addition
@@ -47,6 +60,18 @@ function App() {
   // }, []);
   // //#endregion prompt getting float for addition
   // //
+  //#region timer prgBar instal progress
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (prgCount <= 100) {
+        setPrgCount(prgCount++);
+      }
+    }, 1000);
+    console.log(prgCount);
+    // timer cleanup fction for resetin interval
+    return () => clearInterval(timer);
+  }, [prgCount]);
+  //#endregion timer prgBar instal progress
   //#region handleData function
   const handleData = (data, source) => {
     switch (source) {
@@ -70,6 +95,10 @@ function App() {
       }
       case `select-kindOfCream`: {
         setCreamOption(data);
+        break;
+      }
+      case `range-discSpace`: {
+        setRangeValue(data);
         break;
       }
 
@@ -153,10 +182,29 @@ function App() {
               />
               {/* //#endregion kind of ice-cream */}
             </section>
+            {/* //#region COMPUTER section */}
+            <section className="computer">
+              <Range
+                id="range-discSpace"
+                label={"Disk Space"}
+                min={minDiskSpace}
+                max={maxDisckSpace}
+                handleData={handleData}
+              />
+              <p>
+                <span>
+                  <Clock /> {" , " + rangeValue + " % disc space left."}
+                </span>
+              </p>
+            </section>
+            {/* //#endregion COMPUTER section */}
           </div>
           {/* //#endregion 1stcol */}
           {/* //#region  2ndcol */}
           <div className="col-6">
+            {/* //#region PROGRESSBAR */}
+            <ProgressBar id="Prg-Instal" dataIn={prgCount} />
+            {/* //#endregion PROGRESSBAR */}
             {/* //#region 1st in row */}
             <div className="row">
               <div className="col-6"></div>
