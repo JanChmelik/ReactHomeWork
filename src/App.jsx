@@ -1,15 +1,29 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import validateFloat from "./functions/validateFloat";
 
+//
 function App() {
+  useEffect(() => {
+    let float = parseFloat(prompt(`Give a float number for addition`, `3.5`));
+    while (!validateFloat(float)) {
+      float = parseFloat(prompt(`Give a float number for addition`, `3.5`));
+    }
+  }, []);
+
+  //
+  //
+  //
   return (
     <div className="bg-info-subtle vw-100 vh-100">
       {/* //#region container */}
       <div className="container bg-warning-subtle">
         {/* #region wrapping row */}
         <div className="row">
-          {/* //#region 1stcol */}
-          <div className="col-6"></div>
+          {/* //#region 1stcol: ice-cream */}
+          <div className="col-6">
+            section.ice-cream>p{`yours selected ice-cream:`}
+          </div>
           {/* //#endregion 1stcol */}
           {/* //#region  2ndcol */}
           <div className="col-6">
