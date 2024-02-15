@@ -3,27 +3,34 @@ import "./App.css";
 import validateFloat from "./functions/validateFloat";
 // import handleData from "./functions/handleData";
 import RbGroup from "./components/RbGroup";
+import ChbGroup from "./components/ChbGroup";
 //
 function App() {
   //#region CONSTs
-  // consts for ice-cream taste RbGroup
+  //#region consts for ice-cream taste
+  // RBGROUP
   const [tastePalete, setTastePalete] = useState([
-    "strawberry",
-    "blueberry",
-    "smurfs",
-    "gargamel",
+    "strawberry ",
+    "blueberry ",
+    "smurfs ",
+    "gargamel ",
   ]);
   const [taste, setTaste] = useState();
+  // CHECKBOXES
+  const [sprinkles, setSprinkles] = useState(["nuts ", "chocolate ", "sirup "]);
+  const [sprinkle, setSprinkle] = useState([]);
+  //#endregion consts for ice-cream taste RbGroup
   //#endregion CONSTs
-  //#region promt getting float for addition
-  useEffect(() => {
-    let float = parseFloat(prompt(`Give a float number for addition`, `3.5`));
-    while (!validateFloat(float)) {
-      float = parseFloat(prompt(`Give a float number for addition`, `3.5`));
-    }
-  }, []);
-  //#endregion prompt getting float for addition
-  //
+  // ########################### uncomment region prompt on finishing###################################
+  // //#region promt getting float for addition
+  // useEffect(() => {
+  //   let float = parseFloat(prompt(`Give a float number for addition`, `3.5`));
+  //   while (!validateFloat(float)) {
+  //     float = parseFloat(prompt(`Give a float number for addition`, `3.5`));
+  //   }
+  // }, []);
+  // //#endregion prompt getting float for addition
+  // //
   //#region handleData function
   const handleData = (data, source) => {
     switch (source) {
@@ -31,8 +38,10 @@ function App() {
         setTaste(data);
         break;
       }
-      // case value:
-      //   break;
+      case `chbg-sprinkling`: {
+        setSprinkle(data);
+        break;
+      }
       // case value:
       //   break;
 
@@ -52,7 +61,10 @@ function App() {
           {/* //#region 1stcol: ice-cream */}
           <div className="col-6">
             <section className="ice-cream">
-              <p>Yours selected ice-cream: {taste}</p>
+              <p>
+                Yours selected ice-cream: {taste}{" "}
+                {sprinkle.length != 0 ? "with " + sprinkle + "on top" : ""}
+              </p>
               {/* //#region RBGgroup taste choice*/}
               <RbGroup
                 label="Select your taste"
@@ -68,6 +80,20 @@ function App() {
                 handleData={handleData}
               />
               {/* //#endregion RBGgroup */}
+              {/* //#region  ChbGroup SomethingOnTop */}
+              <ChbGroup
+                id="chbg-sprinkling"
+                label="Sprinkling on top"
+                handleData={handleData}
+                dataIn={[
+                  // tady by to chtelo nejakou funkci na propis
+                  { label: sprinkles[0], value: sprinkles[0] },
+                  { label: sprinkles[1], value: sprinkles[1] },
+                  { label: sprinkles[2], value: sprinkles[2] },
+                ]}
+                selectedValue={sprinkle}
+              />
+              {/* #endregion ChbGroup SomethingOnTop */}
             </section>
           </div>
           {/* //#endregion 1stcol */}
