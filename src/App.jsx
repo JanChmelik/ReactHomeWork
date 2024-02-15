@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import validateFloat from "./functions/validateFloat";
-// import handleData from "./functions/handleData";
+// import handleData from "./functions/handleData"; //Refactoring handleData to separate file
 import RbGroup from "./components/RbGroup";
 import ChbGroup from "./components/ChbGroup";
+import NumIn from "./components/NumImp";
 //
 function App() {
   //#region CONSTs
-  //#region consts for ice-cream taste
+  //#region consts for ice-cream
   // RBGROUP
   const [tastePalete, setTastePalete] = useState([
     "strawberry ",
@@ -19,7 +20,11 @@ function App() {
   // CHECKBOXES
   const [sprinkles, setSprinkles] = useState(["nuts ", "chocolate ", "sirup "]);
   const [sprinkle, setSprinkle] = useState([]);
-  //#endregion consts for ice-cream taste RbGroup
+  //Scoops NumIn
+  const [scoopsNo, setScoopsNo] = useState();
+  const scoopsMin = 1;
+  const scoopsMax = 4;
+  //#endregion consts for ice-cream
   //#endregion CONSTs
   // ########################### uncomment region prompt on finishing###################################
   // //#region promt getting float for addition
@@ -42,8 +47,16 @@ function App() {
         setSprinkle(data);
         break;
       }
-      // case value:
-      //   break;
+      case `numIn-scoops`: {
+        if (data > scoopsMax) {
+          setScoopsNo(scoopsMax);
+        } else if (data < scoopsMin) {
+          setScoopsNo(scoopsMin);
+        } else {
+          setScoopsNo(data);
+        }
+        break;
+      }
 
       default:
         break;
@@ -62,7 +75,13 @@ function App() {
           <div className="col-6">
             <section className="ice-cream">
               <p>
-                Yours selected ice-cream: {taste}{" "}
+                Yours selected ice-cream:
+                {scoopsNo == undefined
+                  ? ""
+                  : scoopsNo > 1
+                  ? scoopsNo + " scoops "
+                  : scoopsNo + " scoop "}{" "}
+                {taste == undefined ? "" : "of " + taste + " flavour, "}
                 {sprinkle.length != 0 ? "with " + sprinkle + "on top" : ""}
               </p>
               {/* //#region RBGgroup taste choice*/}
@@ -94,6 +113,15 @@ function App() {
                 selectedValue={sprinkle}
               />
               {/* #endregion ChbGroup SomethingOnTop */}
+              {/* //#region NUMBER of SCOOPS */}
+              <NumIn
+                id="numIn-scoops"
+                label="No. scoops (max 4)"
+                min={scoopsMin}
+                max={scoopsMax}
+                handleData={handleData}
+              />
+              {/* //#endregion NUMBER of SCOOPS */}
             </section>
           </div>
           {/* //#endregion 1stcol */}

@@ -1,6 +1,6 @@
 import React from "react";
 
-function NumImp({ dataIn, label, handleData, id }) {
+function NumImp({ dataIn, label, handleData, id,min,max }) {
   const handleChange = (e) => {
     handleData(e.target.value, id);
   };
@@ -16,6 +16,8 @@ function NumImp({ dataIn, label, handleData, id }) {
         value={dataIn}
         id={id}
         onChange={handleChange}
+        min={min}
+        max={max}
       />
     </>
   );
