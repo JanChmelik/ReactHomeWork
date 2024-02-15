@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import validateFloat from "./functions/validateFloat";
+import saveText from "./functions/saveText";
 // import handleData from "./functions/handleData"; //Refactoring handleData to separate file
 import RbGroup from "./components/RbGroup";
 import ChbGroup from "./components/ChbGroup";
@@ -11,6 +12,8 @@ import Clock from "./components/Clock";
 import ProgressBar from "./components/ProgressBar";
 import TextInp from "./components/TextBox";
 import Button from "./components/Button";
+import TextArea from "./components/TextArea";
+import File from "./components/File";
 //
 function App() {
   //#region CONSTs
@@ -52,12 +55,15 @@ function App() {
   const tickValue = 1000;
   const [tickAdditionToPrgCount, setTickAdd] = useState(25);
   //#endregion consts for computer
+  //#region CONSTS for ADDITION
   const [txbValue1, setTxbValue1] = useState();
   const [txbValue2, setTxbValue2] = useState();
-  //#region CONSTS for ADDITION
   let summ = 0;
   let [sumText, setSumText] = useState("");
   //#endregion CONSTS for ADDITION
+  //
+  // textArea CONST
+  const [txAtext, setTxtAtext] = useState("");
   //
   //#endregion CONSTs
   // ########################### uncomment region prompt on finishing###################################
@@ -122,6 +128,13 @@ function App() {
         setTxbValue2(data);
         break;
       }
+      case "txA": {
+        setTxtAtext(data);
+        break;
+      }
+      case "file": {
+        setTxtAtext(data);
+      }
       default:
         break;
     }
@@ -144,6 +157,9 @@ function App() {
           setSumText("No correct input detected");
         }
         break;
+      }
+      case "btn-dload": {
+        saveText(txAtext);
       }
 
       default:
@@ -255,7 +271,7 @@ function App() {
             {/* //#endregion PROGRESSBAR */}
             {/* //#region 1st in row textinp*/}
             <div className="row">
-              <div className="col-sm-6">
+              <div className="col-6 ">
                 <TextInp
                   id="txb-1"
                   label="First addend"
@@ -263,7 +279,7 @@ function App() {
                   dataIn={txbValue1}
                 />
               </div>
-              <div className="col-sm-6">
+              <div className="col-6 ">
                 <TextInp
                   id="txb-2"
                   label="Second addend"
@@ -289,9 +305,28 @@ function App() {
             </div>
             {/* //#endregion 2nd in row */}
             {/* //#region 3rd in row */}
+            <TextArea
+              id={"txA"}
+              label={"Your ice-cream description"}
+              height={150}
+              handleData={handleData}
+              dataIn={txAtext}
+            />
             <div className="row">
-              <div className="col-6"></div>
-              <div className="col-6"></div>
+              <div className="col-m-6">
+                <File
+                  id={"file"}
+                  // label={"Upload from file"}
+                  handleData={handleData}
+                />
+              </div>
+              <div className="col-m-6">
+                <Button
+                  id={"btn-dload"}
+                  label={"download file"}
+                  handleEvent={handleEvent}
+                />
+              </div>
             </div>
             {/* //#endregion 3rd in row */}
             {/* <textarea name="" id="" cols="30" rows="10"></textarea> */}
